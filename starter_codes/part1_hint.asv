@@ -51,33 +51,44 @@ ylabel("Eigenvalue");
 szy = size(y, 1);
 results = zeros(szy,1);
 step = sz;
-numPC = 40;
-n_patch = zeros(step,1);
-for idx = 0:(szy/step)-1
+numPC = 10;
+for idx = 0:(x/step)-1
     
     patch = y(((idx*step)+1):((idx+1)*step),1);
 
     patch =double( reshape(patch, 1,step));
 
-    
+    n_patch = zeros(64,1);
     %dot product and recreate patch
     coeffs = patch * U(:, 1:numPC);
     n_patch = coeffs * U(:, 1:numPC).';
     %write back results
     n_patch = reshape(n_patch,step, 1);
-    results(((idx*step)+1):((idx+1)*step),1) = n_patch;
+    results(((idx*8)+1):((idx+1)*8),1) = n_patch;
 
 end
 
-% sound the reconstructed
 sound(results, fs);
-
-% compare the reconstructed with the original
 figure
-subplot(2, 1, 1)
-plot(y);
-title("original")
-subplot(2, 1, 2)
 plot(results);
-title("reconstructed with " + numPC + " PCs"); 
-
+% 
+% results10 = results;
+% 
+% figure
+% colormap('gray');
+% %contrast normalization
+% results = results - min(min(results));
+% results = results / max(max(results));
+% imshow(results);
+% title('Recreated with PCA (10)');
+% 
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %code for showing original image.
+% 
+% figure
+% colormap('gray');
+% imshow(im);
+% title('Original image');
+% 
+% 
